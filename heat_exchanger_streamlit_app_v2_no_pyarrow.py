@@ -574,7 +574,6 @@ def render_method_section() -> None:
 def main() -> None:
     st.set_page_config(page_title="Heat_Exchanger - Cantera App ", layout="wide")
     st.title("Heat_Exchanger - Cantera Streamlit App")
-    )
 
     if not HAS_CANTERA:
         st.error(
