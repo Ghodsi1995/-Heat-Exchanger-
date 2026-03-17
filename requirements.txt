@@ -1,0 +1,3 @@
+cantera
+pillow
+streamlit
