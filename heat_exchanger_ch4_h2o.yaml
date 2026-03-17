@@ -1,0 +1,69 @@
+generator: YamlWriter
+cantera-version: 3.2.0
+description: |-
+  Minimal CH4 / H2O thermo subset for a heat-exchanger app.
+  CH4 and H2O species data are extracted from Cantera's gri30.yaml.
+  The YAML is used here for the methane ideal-gas phase and for a reference H2O species.
+  The water side of the exchanger is solved with ct.Water(backend="Reynolds") in Python,
+  which is more appropriate for 140 bar water / steam service than ideal-gas H2O.
+phases:
+  - name: methane_ig
+    thermo: ideal-gas
+    kinetics: gas
+    reactions: none
+    elements: [C, H]
+    species: [CH4]
+    state:
+      T: 298.15
+      P: 1 atm
+      X: {CH4: 1.0}
+
+  - name: steam_ig
+    thermo: ideal-gas
+    kinetics: gas
+    reactions: none
+    elements: [H, O]
+    species: [H2O]
+    state:
+      T: 298.15
+      P: 1 atm
+      X: {H2O: 1.0}
+
+species:
+  - name: CH4
+    composition: {C: 1, H: 4}
+    thermo:
+      model: NASA7
+      temperature-ranges: [200.0, 1000.0, 3500.0]
+      data:
+        - [5.14987613, -0.0136709788, 4.91800599e-05, -4.84743026e-08,
+           1.66693956e-11, -1.02466476e+04, -4.64130376]
+        - [0.074851495, 0.0133909467, -5.73285809e-06, 1.22292535e-09,
+           -1.0181523e-13, -9468.34459, 18.437318]
+      note: L8/88
+    transport:
+      model: gas
+      geometry: nonlinear
+      well-depth: 141.4
+      diameter: 3.746
+      polarizability: 2.6
+      rotational-relaxation: 13.0
+
+  - name: H2O
+    composition: {H: 2, O: 1}
+    thermo:
+      model: NASA7
+      temperature-ranges: [200.0, 1000.0, 3500.0]
+      data:
+        - [4.19864056, -2.0364341e-03, 6.52040211e-06, -5.48797062e-09,
+           1.77197817e-12, -3.02937267e+04, -0.849032208]
+        - [3.03399249, 2.17691804e-03, -1.64072518e-07, -9.7041987e-11,
+           1.68200992e-14, -3.00042971e+04, 4.9667701]
+      note: L8/89
+    transport:
+      model: gas
+      geometry: nonlinear
+      well-depth: 572.4
+      diameter: 2.605
+      dipole: 1.844
+      rotational-relaxation: 4.0
